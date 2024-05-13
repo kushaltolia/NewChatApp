@@ -87,6 +87,15 @@ app.get('/message/:userId', async (req, res) => {
         res.status(400).json({error : error.message})
     }
 })
+app.get('/people', async (req, res) => {
+    try {
+        const users = await User.find({}, {'_id' : 1, username : 1});
+        res.status(200).json(users);
+    } catch(error) {
+        console.log("Error is : ", error.message);
+        res.status(400).json({error : error.message})
+    }
+})
 
 const server = app.listen(4000, ()=> {
     console.log('Server is running on port 4000')

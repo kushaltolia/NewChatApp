@@ -14,6 +14,7 @@ function Chat() {
     } else {
         const [websocket, setWebsocket] = useState(null);
         const [onlinePeople, setOnlinePeople] = useState({});
+        const [offlinePeople, setOfflinePeople] = useState([]);
         const [selectedUserId, setSelectedUserId] = useState(null);
         const [newMessageText, setNewMessageText] = useState('');
         const [mesages, setMessages] = useState([]);
@@ -30,6 +31,15 @@ function Chat() {
                 console.log(res.data);
             })
         }, [selectedUserId])
+        useEffect(() => {
+            axios.get('http://localhost:4000/people').then(res => {
+                const allPeople = res.data;
+                console.log("All people are : ", allPeople);
+                const offlinePeopleArray = allPeople.filter(person => !onlinePeople[person._id]);
+                console.log("Offline people are : ", offlinePeopleArray);
+                setOfflinePeople(offlinePeopleArray);
+            })
+        }, [onlinePeople])
         function showPeopleOnline(peopleArray) {
             const people = {};
             peopleArray.forEach(({userId, username}) => {
@@ -74,8 +84,21 @@ function Chat() {
                                 <div onClick = {() => selectContact(userId)} key = {userId} className = {'border-b border-gray-100 flex items-center gap-2 cursor-pointer ' + (selectedUserId === userId ? "bg-blue-50" : "" )}>
                                 {userId === selectedUserId && <div className = 'w-1 bg-blue-500 h-12'/> }
                                 <div className = 'flex gap-2 py-2 pl-4 items-center'>
-                                    <Avatar userId = {userId} username = {onlinePeople[userId]} />
+                                    <Avatar userId = {userId} username = {onlinePeople[userId]} online = {true} />
                                     <span>{onlinePeople[userId]}</span>
+                                </div>
+                            </div>
+                            )
+                        }
+                })}
+                {(offlinePeople).map(offPerson => {
+                        if(loggedinUsername !== offPerson._id) {
+                            return (
+                                <div onClick = {() => selectContact(offPerson._id)} key = {offPerson._id} className = {'border-b border-gray-100 flex items-center gap-2 cursor-pointer ' + (selectedUserId === offPerson._id ? "bg-blue-50" : "" )}>
+                                {offPerson._id === selectedUserId && <div className = 'w-1 bg-blue-500 h-12'/> }
+                                <div className = 'flex gap-2 py-2 pl-4 items-center'>
+                                    <Avatar userId = {offPerson._id} username = {offPerson.username} online = {false} />
+                                    <span>{offPerson.username}</span>
                                 </div>
                             </div>
                             )
