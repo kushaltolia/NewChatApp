@@ -1,0 +1,21 @@
+name : Build on PR
+
+on : 
+    pull_request:
+        branches:
+            - master
+
+jobs :
+    buildBackend :
+        runs-on : ubuntu-latest
+        steps :
+            - name : checkout code
+              uses : actions/checkout@v2
+            - name : Install Dependencies
+              run : |
+                cd backend
+                npm install
+            - name : Build backend
+              run : |
+                cd backend
+                npm run build
