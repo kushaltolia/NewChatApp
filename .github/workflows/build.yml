@@ -13,9 +13,9 @@ jobs :
               uses : actions/checkout@v2
             - name : Install Dependencies
               run : |
-                cd backend
+                cd api
                 npm install
             - name : Build backend
               run : |
-                cd backend
-                npm run build
+                cd api
+                node index.js
