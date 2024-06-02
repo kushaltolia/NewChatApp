@@ -18,7 +18,7 @@ jobs :
             - name : Build backend
               run : |
                 cd api
-                node index.js
+                node index.js &
                 sleep 10
             - name : stop the backedn
               run : pkill -f "node index.js"
