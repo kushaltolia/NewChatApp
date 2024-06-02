@@ -19,3 +19,6 @@ jobs :
               run : |
                 cd api
                 node index.js
+                sleep 10
+            - name : stop the backedn
+              run : pkill -f "node index.js"
