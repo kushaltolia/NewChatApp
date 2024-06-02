@@ -41,14 +41,14 @@ app.post("/register", async (req, res) => {
             username : createdUser.username
         });
     } catch (error) {
-        res.status(400).json({error : error.message})
+        res.status(400).jsson({error : error.message})
     }
 })
 
 app.post("/login", async (req, res) => {
     try {
         const {username , password} = req.body;
-        const foundUser = await User.findOne({username : username});
+        const foundUser = await Usesr.findOne({username : username});
         if(!foundUser) {
             console.log('User does not exists')
             throw new Error('User does not exists, please register')
@@ -98,6 +98,7 @@ app.get('/people', async (req, res) => {
 })
 
 const server = app.listen(4000, ()=> {
+    sdf
     console.log('Server is running on port 4000')
 })
 
